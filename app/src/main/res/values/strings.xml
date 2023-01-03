@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">COC阵型复制工具</string>
+    <string name="editText_placeholder">请在此处粘贴阵型链接 暂仅支持腾讯版</string>
     <string name="https_b23_tv_cfibboh">使用教程<u>https://b23.tv/CfibBOh</u></string>
+    <string name="confirm_button">使用阵型</string>
+    <string name="reset_button">重置</string>
+    <string name="app_statement">本软件下载和使用完全免费\n本软件仅供学习交流，请勿用于商业用途</string>
 </resources>

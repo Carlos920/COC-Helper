@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity() {
         val spanStr = SpannableString("github")
         //把图片设置进Span中
         spanStr.setSpan(span, 0, spanStr.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
-        val textTemp = textView?.getText()
-        textView?.setText(spanStr)
+        val textTemp = textView?.text
+        textView?.text = spanStr
         textView?.append(textTemp)
         //endregion
 
@@ -61,15 +61,15 @@ class MainActivity : AppCompatActivity() {
         button?.setOnClickListener {
             var urlText: String = editText?.text.toString()
             if (urlText.indexOf("=tencent") != -1 || urlText.indexOf("=IOS") != -1) {
-                var startNum: Int = urlText.indexOf("?")
+                val startNum: Int = urlText.indexOf("?")
                 urlText = urlText.substring(startNum + 1)
-                urlText = "clashofclans://" + urlText
+                urlText = "clashofclans://$urlText"
                 val componentName = ComponentName(
                     "com.tencent.tmgp.supercell.clashofclans",
                     "com.supercell.titan.tencent.GameAppTencent"
                 )
                 intent.component = componentName
-                intent.setData(urlText.toUri())
+                intent.data = urlText.toUri()
                 startActivity(intent)
             } else {
                 toast.show()
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
          * 重置按钮
          */
         button1?.setOnClickListener {
-            editText?.text = null;
+            editText?.text = null
         }
 
         /**

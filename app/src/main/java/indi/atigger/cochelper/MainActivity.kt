@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -86,26 +87,19 @@ class MainActivity : AppCompatActivity() {
         /**
          * 打开链接
          */
-        fun openLink(uri: String) {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(uri)
+        fun openLinkByClick(view: View?, uri: String) {
+            view?.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(uri)
+                }
+                startActivity(intent)
             }
-            startActivity(intent)
         }
 
-        /**
-         * 开源地址
-         */
-        textView?.setOnClickListener {
-            openLink("https://github.com/atigger/COC-Helper")
-        }
-
-        /**
-         * 教程按钮
-         */
-        textView2?.setOnClickListener {
-            openLink("https://b23.tv/CfibBOh")
-        }
+        // 开源地址
+        openLinkByClick(textView, "https://github.com/atigger/COC-Helper")
+        // 教程按钮
+        openLinkByClick(textView2, "https://b23.tv/CfibBOh")
     }
 
 

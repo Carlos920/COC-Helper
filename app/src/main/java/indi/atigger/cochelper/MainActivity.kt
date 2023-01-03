@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         val textView2: TextView? = findViewById(R.id.textView2)
         val textView: TextView? = findViewById(R.id.textView)
         val toast: Toast =
-            Toast.makeText(applicationContext, "暂不支持此链接\n国服和国际服数据不互通", Toast.LENGTH_SHORT)
+            Toast.makeText(applicationContext, R.string.app_toast, 3 * 1000)
 
         //region 添加图片
         /*val imageSpan: ImageSpan = ImageSpan(this, R.drawable.github)
@@ -84,23 +84,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         /**
+         * 打开链接
+         */
+        fun openLink(uri: String) {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(uri)
+            }
+            startActivity(intent)
+        }
+
+        /**
          * 开源地址
          */
         textView?.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://github.com/atigger/COC-Helper")
-            }
-            startActivity(intent)
+            openLink("https://github.com/atigger/COC-Helper")
         }
 
         /**
          * 教程按钮
          */
         textView2?.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://b23.tv/CfibBOh")
-            }
-            startActivity(intent)
+            openLink("https://b23.tv/CfibBOh")
         }
     }
 

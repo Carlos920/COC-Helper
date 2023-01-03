@@ -27,16 +27,34 @@ android {
         minSdk 21
         targetSdk 33
         versionCode 11
-        versionName "1.1"
+        versionName "1.1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
+            // 移除无用的resource文件
             shrinkResources true
+            // 混淆
             minifyEnabled true
+            // Zipalign优化
+            zipAlignEnabled true
+            // 前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            // 自定义APK名称
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // COC_Helper-版本名称.apk
+                        def fileName = "COC_Helper-${buildType.name}-v${defaultConfig.versionName}.apk"
+                        // output.outputFile = new File(output.outputFile.parent, fileName)
+                        outputFileName = fileName
+                    }
+                }
+            }
         }
     }
     compileOptions {

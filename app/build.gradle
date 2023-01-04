@@ -50,6 +50,7 @@ android {
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
                         // COC_Helper-版本名称.apk
                         def fileName = "COC_Helper-${buildType.name}-v${defaultConfig.versionName}.apk"
+                        // def fileName = outputFile.name.replace("app-release","COC_Helper-${buildType.name}-v${defaultConfig.versionName}")
                         // output.outputFile = new File(output.outputFile.parent, fileName)
                         outputFileName = fileName
                     }

@@ -45,7 +45,8 @@ class MainActivity : AppCompatActivity() {
         //图片资源转drawable,
         val img = ContextCompat.getDrawable(this, R.drawable.github)
         //设置图片大小
-        img?.setBounds(0, 0, 48, 48)
+        val textSize = textView?.textSize?.toInt() ?: 40
+        img?.setBounds(0, 0, textSize, textSize)
         //生成ImageSapn
         val span = img?.let { CenterImageSpan(it) }
         val spanStr = SpannableString("github")
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         spanStr.setSpan(span, 0, spanStr.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
         val textTemp = textView?.text
         textView?.text = spanStr
-        textView?.append(textTemp)
+        textView?.append(" $textTemp")
         //endregion
 
         /**

@@ -24,30 +24,16 @@ class ShareReceiverActivity : AppCompatActivity() {
         when {
             intent.action == Intent.ACTION_SEND && intent.type == receivingType -> {
                 intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-                    dispose(it)
+                    if(it.isNotBlank()) openSchemeUrl(it)
                 }
             }
         }
     }
 
-    private fun dispose(text: String) {
-        if (text.isBlank()) {
-            return
-        }
-        val urls = text.split("\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val result = StringBuilder()
-        for (url in urls) {
-            if (url.matches("http.+".toRegex()))
-                result.append("\n").append(url.trim { it <= ' ' })
-        }
-        openSchemeUrl(text)
-    }
-
     private fun openSchemeUrl(urlStr: String) {
         var urlText = urlStr
-        if (urlText.indexOf("=tencent") != -1 || urlText.indexOf("=IOS") != -1) {
-            val startNum: Int = urlText.indexOf("?")
-            urlText = urlText.substring(startNum + 1)
+        if (urlText.indexOf("=tencent", ignoreCase = true) != -1 || urlText.indexOf("=IOS", ignoreCase = true) != -1) {
+            urlText = urlText.substringAfter("?")
             urlText = "clashofclans://$urlText"
             val componentName = ComponentName(
                 "com.tencent.tmgp.supercell.clashofclans",

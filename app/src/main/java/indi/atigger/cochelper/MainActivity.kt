@@ -62,9 +62,8 @@ class MainActivity : AppCompatActivity() {
          */
         button?.setOnClickListener {
             var urlText: String = editText?.text.toString()
-            if (urlText.indexOf("=tencent") != -1 || urlText.indexOf("=IOS") != -1) {
-                val startNum: Int = urlText.indexOf("?")
-                urlText = urlText.substring(startNum + 1)
+            if (urlText.indexOf("=tencent", ignoreCase = true) != -1 || urlText.indexOf("=IOS", ignoreCase = true) != -1) {
+                urlText = urlText.substringAfter("?")
                 urlText = "clashofclans://$urlText"
                 val componentName = ComponentName(
                     "com.tencent.tmgp.supercell.clashofclans",

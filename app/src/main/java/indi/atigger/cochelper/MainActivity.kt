@@ -34,7 +34,12 @@ class MainActivity : AppCompatActivity() {
         val textView2: TextView? = findViewById(R.id.textView2)
         val textView: TextView? = findViewById(R.id.textView)
         val toast: Toast =
-            Toast.makeText(applicationContext, R.string.app_toast, 3 * 1000)
+            Toast.makeText(applicationContext, "暂不支持此链接\n国服和国际服数据不互通", Toast.LENGTH_SHORT)
+        val componentName = ComponentName(
+            "com.tencent.tmgp.supercell.clashofclans",
+            "com.supercell.titan.tencent.GameAppTencent"
+        )
+
 
         //region 添加图片
         /*val imageSpan: ImageSpan = ImageSpan(this, R.drawable.github)
@@ -57,20 +62,33 @@ class MainActivity : AppCompatActivity() {
         textView?.append(" $textTemp")
         //endregion
 
+
+        /**
+         * 接收intent请求
+         */
+        val intent = intent
+        val scheme = intent.scheme
+        val uri = intent.data
+        if(uri!=null){
+            var urlText:String = uri.toString()
+            if(urlText.indexOf("=tencent") != -1 || urlText.indexOf("=IOS") != -1 || urlText.indexOf("=iOS") != -1 || urlText.indexOf("=ios") != -1){
+                intent.component = componentName
+                intent.setData(uri)
+                startActivity(intent)
+            }else{
+                toast.show()
+            }
+        }
         /**
          * 使用阵型点击事件，替换链接关键字之后通过intent打开应用
          */
         button?.setOnClickListener {
             var urlText: String = editText?.text.toString()
-            if (urlText.indexOf("=tencent", ignoreCase = true) != -1 || urlText.indexOf("=IOS", ignoreCase = true) != -1) {
+            if(urlText.indexOf("=tencent", ignoreCase = true) != -1 || urlText.indexOf("=IOS", ignoreCase = true) != -1){
                 urlText = urlText.substringAfter("?")
                 urlText = "clashofclans://$urlText"
-                val componentName = ComponentName(
-                    "com.tencent.tmgp.supercell.clashofclans",
-                    "com.supercell.titan.tencent.GameAppTencent"
-                )
                 intent.component = componentName
-                intent.data = urlText.toUri()
+                intent.setData(urlText.toUri())
                 startActivity(intent)
             } else {
                 toast.show()
@@ -81,7 +99,7 @@ class MainActivity : AppCompatActivity() {
          * 重置按钮
          */
         button1?.setOnClickListener {
-            editText?.text = null
+            editText?.text = null;
         }
 
         /**
@@ -101,6 +119,4 @@ class MainActivity : AppCompatActivity() {
         // 教程按钮
         openLinkByClick(textView2, "https://b23.tv/CfibBOh")
     }
-
-
 }

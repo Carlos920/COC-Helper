@@ -1,6 +1,5 @@
 package indi.atigger.cochelper
 
-import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -13,7 +12,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 
 
 /**
@@ -35,10 +33,6 @@ class MainActivity : AppCompatActivity() {
         val textView: TextView? = findViewById(R.id.textView)
         val toast: Toast =
             Toast.makeText(applicationContext, "暂不支持此链接\n国服和国际服数据不互通", Toast.LENGTH_SHORT)
-        val componentName = ComponentName(
-            "com.tencent.tmgp.supercell.clashofclans",
-            "com.supercell.titan.tencent.GameAppTencent"
-        )
 
 
         //region 添加图片
@@ -64,35 +58,11 @@ class MainActivity : AppCompatActivity() {
 
 
         /**
-         * 接收intent请求
-         */
-        val intent = intent
-        val scheme = intent.scheme
-        val uri = intent.data
-        if(uri!=null){
-            var urlText:String = uri.toString()
-            if(urlText.indexOf("=tencent") != -1 || urlText.indexOf("=IOS") != -1 || urlText.indexOf("=iOS") != -1 || urlText.indexOf("=ios") != -1){
-                intent.component = componentName
-                intent.setData(uri)
-                startActivity(intent)
-            }else{
-                toast.show()
-            }
-        }
-        /**
          * 使用阵型点击事件，替换链接关键字之后通过intent打开应用
          */
         button?.setOnClickListener {
-            var urlText: String = editText?.text.toString()
-            if(urlText.indexOf("=tencent", ignoreCase = true) != -1 || urlText.indexOf("=IOS", ignoreCase = true) != -1){
-                urlText = urlText.substringAfter("?")
-                urlText = "clashofclans://$urlText"
-                intent.component = componentName
-                intent.setData(urlText.toUri())
-                startActivity(intent)
-            } else {
-                toast.show()
-            }
+            val urlText: String = editText?.text.toString()
+            Utils.activityStart(urlText, toast, this)
         }
 
         /**

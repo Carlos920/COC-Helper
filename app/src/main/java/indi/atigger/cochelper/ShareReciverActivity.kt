@@ -1,11 +1,9 @@
 package indi.atigger.cochelper
 
-import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 
 class ShareReceiverActivity : AppCompatActivity() {
 
@@ -17,6 +15,7 @@ class ShareReceiverActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         toast = Toast.makeText(applicationContext, R.string.app_toast, 3 * 1000);
         initIntent()
+        openByClickWebButton()
     }
 
 
@@ -24,27 +23,28 @@ class ShareReceiverActivity : AppCompatActivity() {
         when {
             intent.action == Intent.ACTION_SEND && intent.type == receivingType -> {
                 intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-                    if(it.isNotBlank()) openSchemeUrl(it)
+                    if (it.isNotBlank()) openSchemeUrl(it)
                 }
             }
         }
     }
 
     private fun openSchemeUrl(urlStr: String) {
-        var urlText = urlStr
-        if (urlText.indexOf("=tencent", ignoreCase = true) != -1 || urlText.indexOf("=IOS", ignoreCase = true) != -1) {
-            urlText = urlText.substringAfter("?")
-            urlText = "clashofclans://$urlText"
-            val componentName = ComponentName(
-                "com.tencent.tmgp.supercell.clashofclans",
-                "com.supercell.titan.tencent.GameAppTencent"
-            )
-            intent.component = componentName
-            intent.data = urlText.toUri()
-            startActivity(intent)
-        } else {
-            toast.show()
-        }
+        Utils.activityStart(urlStr, toast, this)
         finish()
+    }
+
+    /**
+     * 接收intent请求
+     */
+    private fun openByClickWebButton(){
+        val intent = intent
+        val scheme = intent.scheme
+        val uri = intent.data
+        if (uri != null) {
+            val urlText: String = uri.toString()
+            Utils.activityStart(urlText, uri, toast, this)
+            finish()
+        }
     }
 }
